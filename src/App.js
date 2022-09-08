@@ -17,8 +17,21 @@ const useField = (type) => {
 
 const useCountry = (name) => {
   const [country, setCountry] = useState(null)
+  
 
-  useEffect(() => {})
+  useEffect(() => {
+    if(name){
+      console.log('There is a name', name)
+      const countryApiUrl = `https://restcountries.com/v3.1/name/${name}?fullText=true`
+      axios.get(countryApiUrl).then((response) => {
+        console.log('Response: ', response.data)
+        setCountry(response.data[0])
+      }).catch((error) => {
+        console.log('Error: ', error)
+        setCountry(null)
+      })
+    } 
+  },[name])
 
   return country
 }
@@ -27,7 +40,7 @@ const Country = ({ country }) => {
   if (!country) {
     return <div>not found...</div>
   }
-
+  console.log('Country: ', country)
   return (
     <div>
       <h3>{country.name.common}</h3>
